@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'corsheaders',
+    'doctor.apps.DoctorConfig',
     'patient.apps.PatientConfig',
     'django.contrib.admin',
     'django.contrib.auth',

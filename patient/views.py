@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest, Http404 , JsonResponse
+from django.http import JsonResponse
 from .models import registration
 import json
 
@@ -12,5 +12,5 @@ def register(request):
         # mob_num=data_register[mobile_number]
         # medical_id=fname[0:1]+lname[0:1]+mob_num[7:11]
         registration.objects.create(**data_register)
-        respone="sucess"
-    return JsonResponse(respone,safe= False)
+        response="sucess"
+    return JsonResponse(response,safe= False)
