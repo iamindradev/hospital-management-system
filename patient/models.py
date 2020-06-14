@@ -15,7 +15,7 @@ class registration(models.Model):
    medical_history=models.CharField( max_length=50)
    user_type=models.CharField( max_length=50, default='patient')
    status=models.CharField(default="pending",max_length=50)
-   medical_id=models.CharField(max_length=50)
+   # medical_id=models.CharField(max_length=50)
 
 class medicine(models.Model):
    date=models.DateField(auto_now_add=False)

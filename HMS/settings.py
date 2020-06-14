@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'corsheaders',
     'doctor.apps.DoctorConfig',
+    'manager.apps.ManagerConfig',
     'patient.apps.PatientConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -131,3 +132,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+# X-Frame-Options='SAMEORIGIN'

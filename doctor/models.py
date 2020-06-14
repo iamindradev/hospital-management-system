@@ -13,3 +13,6 @@ class registration(models.Model):
    qualification=models.CharField(max_length=50,null= True)
    status=models.CharField(max_length=50, default="pending")
    previous_exp=models.IntegerField(null= True)
+
+
+

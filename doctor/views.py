@@ -14,3 +14,14 @@ def register(request):
         registration.objects.create(**data_student)
         respone="sucess"
     return JsonResponse(respone,safe= False)
+
+def logind(request):
+    if request.method =="POST":
+        data_login_doc=json.loads(request.body)
+        email=data_login_doc['email']
+        password=data_login_doc['password']
+        if registration.objects.filter(email=email, password=password).exists()==True:
+            response="logged in successfully"
+        else:
+            response="not registerd yet"
+    return JsonResponse(response,safe=False)
