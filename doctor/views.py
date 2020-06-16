@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import registration
+from .models import registrationd
 import json
 # Create your views here.
 def register(request):
@@ -11,7 +11,7 @@ def register(request):
         # lname=data_register[last_name]
         # mob_num=data_register[mobile_number]
         # medical_id=fname[0:1]+lname[0:1]+mob_num[7:11]
-        registration.objects.create(**data_student)
+        registrationd.objects.create(**data_student)
         respone="sucess"
     return JsonResponse(respone,safe= False)
 
@@ -20,8 +20,11 @@ def logind(request):
         data_login_doc=json.loads(request.body)
         email=data_login_doc['email']
         password=data_login_doc['password']
-        if registration.objects.filter(email=email, password=password).exists()==True:
-            response="logged in successfully"
+        print(email)
+        print(password)
+        if registrationd.objects.filter(email=email, password=password).exists()==True:
+            data_return=list(registrationd.objects.filter(email=email).values())
+            print(data_return)
         else:
-            response="not registerd yet"
-    return JsonResponse(response,safe=False)
+            data_return="not registerd yet"
+    return JsonResponse(data_return,safe=False)

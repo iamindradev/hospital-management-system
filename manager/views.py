@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from 
 from django.http import JsonResponse
 from .models import login
 import json
@@ -13,5 +14,7 @@ def loginm(request):
         if login.objects.filter(username = uname , password= passwd).exist()==True:
             print(uname)
             print(passwd)
+            pending_appointment=
             resp="hey"
+            
     return JsonResponse(resp, safe= False)

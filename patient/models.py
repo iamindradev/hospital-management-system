@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class registration(models.Model):
+class registrationp(models.Model):
    first_name= models.CharField(max_length=200)
    last_name= models.CharField(max_length=200)
    email=models.EmailField(max_length=254)
@@ -22,6 +22,17 @@ class medicine(models.Model):
    medicine_given=models.CharField( max_length=255)
    medication_for=models.CharField( max_length=50)
    doctor_name=models.CharField( max_length=50)
+
+
+class appointment(models.Model):
+   date_time_of_app=models.DateTimeField(auto_now_add=True)
+   disease= models.CharField(max_length=50)
+   date_for_app = models.DateField()
+   time_for_app=models.TimeField()
+   doctor=models.CharField(max_length=50)
+   status=models.CharField(max_length=50, default="pending")
+   
+
 
 
    
