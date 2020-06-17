@@ -8,14 +8,9 @@ import json
 def register(request):
     if request.method=="POST":
         data_register=json.loads(request.body)
-        # for creation of medical id from input data
-        # fname=data_register[first_name]
-        # lname=data_register[last_name]
-        # mob_num=data_register[mobile_number]
-        # medical_id=fname[0:1]+lname[0:1]+mob_num[7:11]
         registrationp.objects.create(**data_register)
         response="sucess"
-    return JsonResponse(response,safe= False)Variable
+    return JsonResponse(response,safe= False)
 #--------------------------------------------------------------------------------------------------------------------------------
 def loginp(request):
     if (request.method)=="POST":
@@ -26,14 +21,15 @@ def loginp(request):
         login =registrationp.objects.filter(email=email_id, password=password)
         if login!= "NULL":
             try:
-                data_to_return=list(registrationp.objects.filter(email= email_id).values())
+                data_to_return=list(registrationp.objects.filter(email=email_id).values('first_name',
+                'last_name','email','mobile_number','age','blood_group','gender','height','weight',))
                 print(data_to_return)
             except ObjectDoesNotExist:
                 print("does not exist")
         # registration.objects.create(**data_for_login)
             # response="sucees"
-            # else:
-            #     data_to_return="not registered"
+        else:
+            data_to_return="not registered"
     return JsonResponse(data_to_return ,safe=False)
 
 #----------------------------------------------------------------------------------------------------------------------------
