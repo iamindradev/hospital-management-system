@@ -26,8 +26,6 @@ def loginp(request):
                 print(data_to_return)
             except ObjectDoesNotExist:
                 print("does not exist")
-        # registration.objects.create(**data_for_login)
-            # response="sucees"
         else:
             data_to_return="not registered"
     return JsonResponse(data_to_return ,safe=False)

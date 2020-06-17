@@ -6,15 +6,10 @@ import json
 def register(request):
     if request.method=="POST":
         data_student=json.loads(request.body)
-        #for creation of medical id from input data
-        # fname=data_register[first_name]
-        # lname=data_register[last_name]
-        # mob_num=data_register[mobile_number]
-        # medical_id=fname[0:1]+lname[0:1]+mob_num[7:11]
         registrationd.objects.create(**data_student)
         respone="sucess"
     return JsonResponse(respone,safe= False)
-
+# -------------------------------------------------------------------------------------------------------------------------------------
 def logind(request):
     if request.method =="POST":
         data_login_doc=json.loads(request.body)
@@ -28,3 +23,4 @@ def logind(request):
         else:
             data_return="not registerd yet"
     return JsonResponse(data_return,safe=False)
+# -------------------------------------------------------------------------------------------------------------------------------------
