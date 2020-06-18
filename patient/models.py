@@ -25,6 +25,7 @@ class medicine(models.Model):
 
 
 class appointment(models.Model):
+   patient=models.ForeignKey(registrationp,  on_delete="DO_NOTHING", null= True)
    date_time_of_app=models.DateTimeField(auto_now_add=True)
    disease= models.CharField(max_length=50)
    date_for_app = models.DateField()

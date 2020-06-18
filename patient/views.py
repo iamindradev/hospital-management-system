@@ -40,4 +40,14 @@ def make_appointment(request):
 def submit_appointment(request):
     if request.method=="POST":
         data_of_app= json.loads(request.body)
-        appointment.objects.create(**data_of_app).exclude(doct)
+        email=data_of_app["email"]
+        print(list(data_of_app))
+        appointment.objects.exclude(email).create(**data_of_app)
+        response="ok"
+    return JsonResponse(response, safe= False)
+
+#----------------------------------------------------------------------------------------------------------------------------
+def all_data(request):
+    if request.method=="GET":
+        data= list(appointment.object.filter())
+    return JsonResponse(data, safe= False)

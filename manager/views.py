@@ -13,9 +13,14 @@ def loginm(request):
         uname= data['username']
         passwd= data['password']
         if login.objects.filter(username = uname , password= passwd).exists()==True:
-            pending_appointment=["hey"]
-            pending_registration=list(registrationd.objects.filter(status="pending").values())
-            data={pending_appointment,pending_registration}
+            pending_appointment=appointment.objects.filter(status="pending").count()
+            pending_registration=registrationd.objects.filter(status="pending").count()
+            data={
+                "pending_appointment":pending_appointment,
+                "pending_registration":pending_registration}
+            print(data)
+        else:
+            data="you are not manager"
     return JsonResponse(data, safe= False)
 # --------------------------------------------------------------------------------------------------------------------------------------
 def all_patient(request):
@@ -32,4 +37,19 @@ def all_doctor(request):
     return JsonResponse(doctor_list,safe=False)
         
 # --------------------------------------------------------------------------------------------------------------------------------------
+def doctor_approval(request):
+    if request.method =="GET":
+        data_to_approve=list(registrationd.objects.filter(status="pending").values('first_name','last_name','qualification',
+        'previous_exp','email','gender','mobile_number'))
+        print(data_to_approve)
+    return JsonResponse(data_to_approve,safe=False)
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+def pending_app(request):
+    if request.method =="GET":
+        data_to_approve=list(appointment.objects.filter(status="pending").values('disease','date_for_app','time_for_app',).order_by('date_time_of_app'))
+        print(data_to_approve)
+    return JsonResponse(data_to_approve,safe=False)
+
+
 
