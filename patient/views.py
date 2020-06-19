@@ -31,23 +31,30 @@ def loginp(request):
     return JsonResponse(data_to_return ,safe=False)
 
 #----------------------------------------------------------------------------------------------------------------------------
-def make_appointment(request):
-    if request.method =="GET":
-        list_of_doctor= registrationd.objects.all()
-    return JsonResponse(list_of_doctor)
+# def make_appointment(request):
+#     if request.method =="GET":
+#         list_of_doctor= registrationd.objects.all()
+#     return JsonResponse(list_of_doctor)
 
 #----------------------------------------------------------------------------------------------------------------------------
-def submit_appointment(request):
+def make_appointment(request):
     if request.method=="POST":
         data_of_app= json.loads(request.body)
         email=data_of_app["email"]
+        disease=data_of_app['disease']
+        date_for_app=data_of_app['date_for_app']
+        time_for_app=data_of_app['time_for_app']
+        patient=list(registrationp.objects.filter(email=email).values('id'))
+        id_dict=patient[0]
+        patient_id=id_dict["id"]
+        print(patient_id)
         print(list(data_of_app))
-        appointment.objects.exclude(email).create(**data_of_app)
-        response="ok"
+        appointment.objects.create(disease=disease,date_for_app=date_for_app,time_for_app=time_for_app,patient_id=patient_id)
+        response="added"
     return JsonResponse(response, safe= False)
 
 #----------------------------------------------------------------------------------------------------------------------------
-def all_data(request):
-    if request.method=="GET":
-        data= list(appointment.object.filter())
-    return JsonResponse(data, safe= False)
+# def all_data(request):
+#     if request.method=="GET":
+#         data= list(appointment.object.filter())
+#     return JsonResponse(data, safe= False)

@@ -14,7 +14,7 @@ class registrationp(models.Model):
    weight=models.IntegerField()
    medical_history=models.CharField( max_length=50)
    user_type=models.CharField( max_length=50, default='patient')
-   status=models.CharField(default="pending",max_length=50)
+   # status=models.CharField(default="pending",max_length=50)
    # medical_id=models.CharField(max_length=50)
 
 class medicine(models.Model):
@@ -25,7 +25,7 @@ class medicine(models.Model):
 
 
 class appointment(models.Model):
-   patient=models.ForeignKey(registrationp,  on_delete="DO_NOTHING", null= True)
+   patient=models.ForeignKey('registrationp', db_column='patient_id' , on_delete="DO_NOTHING",null=True)
    date_time_of_app=models.DateTimeField(auto_now_add=True)
    disease= models.CharField(max_length=50)
    date_for_app = models.DateField()

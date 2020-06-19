@@ -11,8 +11,8 @@ class registrationd(models.Model):
    gender=models.CharField(max_length=50)
    medical_id=models.CharField(max_length=50)
    qualification=models.CharField(max_length=50,null= True)
+   department= models.CharField(max_length = 150,null=True)
    status=models.CharField(max_length=50, default="pending")
    previous_exp=models.IntegerField(null= True)
-
 
 
