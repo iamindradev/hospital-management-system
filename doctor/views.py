@@ -60,7 +60,7 @@ def approve_appointment(request):
         print(patient_id, status)
         if status=="approved":
             appointment.objects.filter(patient_id=patient_id).update(status="approved_by_both")
-            notification.objects.create(changes_made="approved_by_doctor",appntment_id= appointment_id)
+            notification.objects.create(changes_made="approved",change_made_by="doctor",status="active",appntment_id=appointment_id)
             response="approved"
             return JsonResponse(response,safe=False) 
         elif status=="modified":
@@ -68,7 +68,7 @@ def approve_appointment(request):
             time_for_app = data['time_for_app']
             appointment.objects.filter(patient_id=patient_id).update(date_for_app=date_for_app,time_for_app=time_for_app,
             status="approved_by_both")
-            notification.objects.create(changes_made="modified_by doctor",appntment_id=appointment_id)
+            notification.objects.create(changes_made="modified",change_made_by="doctor",status="active",appntment_id=appointment_id)
             response="modified"
             return JsonResponse(response,safe=False)          
 
@@ -83,6 +83,6 @@ def reject_appointment(request):
         appointment_data= appntment[0]
         appointment_id=appointment_data["id"]
         appointment.objects.filter(patient_id=patient_id).update(status="rejected_by_doctor")
-        notification.objects.create(changes_made="rejected_by_doctor",appntment_id=appointment_id)
+        notification.objects.create(changes_made="rejected",change_made_by="doctor",status="active",appntment_id=appointment_id)
         response="rejected"
     return JsonResponse(response,safe=False)

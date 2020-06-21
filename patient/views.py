@@ -52,15 +52,21 @@ def make_appointment(request):
             appointment.objects.create(disease=disease,date_for_app=date_for_app,time_for_app=time_for_app,patient_id=patient_id)
             response="added"
             return JsonResponse(response, safe= False)
+
 #notification
 def notifi(request):
     if request.method =="POST":
         data= json.loads(request.body)
         patient_id =data['id']
-        response = list(notification.objects.filter(appntment_id__patient_id=patient_id).values())
+        if notification.objects.filter(appntment_id__patient_id=patient_id, status="active").exists() == True:
+            response = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification',
+            'time_of_notification','changes_made','change_made_by'))
+            # notification.objects.filter(appntment_id__patient_id=patient_id).update(status="seen")
+            
+        else:
+            response="no new notification"
+
     return JsonResponse(response ,safe= False)
-
-
 
 
 #----------------------------------------------------------------------------------------------------------------------------
