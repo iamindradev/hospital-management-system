@@ -42,16 +42,9 @@ def doctor_approval(request):
     if request.method =="GET":
         data_to_approve=list(registrationd.objects.filter(status="pending").values('first_name','last_name','qualification',
         'previous_exp','email','gender','mobile_number'))
-        # print(data_to_approve)
+        print(data_to_approve)
     return JsonResponse(data_to_approve,safe=False)
 
-#for pending appointment of patient
-def pending_appointment(request):
-    if request.method =="GET":
-        data_to_approve = list(appointment.objects.filter(status="pending").values('disease','date_for_app','time_for_app',
-        'patient_id').order_by('date_time_of_app'))
-        # print(data_to_approve)
-    return JsonResponse(data_to_approve,safe=False)
 
 #for approval of registration of doctor
 def approve_registration(request):
@@ -66,7 +59,14 @@ def approve_registration(request):
             registrationd.objects.filter(email=email).update(status="rejected")
             response="rejected"
     return JsonResponse(response,safe=False)
-
+#pending appointment
+#for pending appointment of patient
+def pending_appointment(request):
+    if request.method =="GET":
+        data_to_approve = list(appointment.objects.filter(status="pending").values('disease','date_for_app','time_for_app',
+        'patient_id').order_by('date_time_of_app'))
+        print(data_to_approve)
+    return JsonResponse(data_to_approve,safe=False)
 
 #for approval of appointment
 def approve_appointment(request):
@@ -75,18 +75,24 @@ def approve_appointment(request):
         patient_id=data["patient_id"]
         status=data['activity']
         id=data['doct_key_id']
-        print(id)
-        print(data)
+        appntment = appointment.objects.filter(patient_id=patient_id).values()
+        appointment_data= appntment[0]
+        appointment_id=appointment_data["id"]
+        # print(appntment)
+        # print(appointment_id)
+        # print(id)
+        # print(data)
         if id != "NULL":
             if status=="approved":
                 appointment.objects.filter(patient_id=patient_id).update(status="approved_by_manager",doct_key_id=id)
+                notification.objects.create(changes_made="approved_by_manager",appntment_id=appointment_id)
                 response="approved"
             elif status=="modified":
                 date_for_app = data['date_for_app']
                 time_for_app = data['time_for_app']
                 appointment.objects.filter(patient_id=patient_id).update(date_for_app=date_for_app,time_for_app=time_for_app,
                 doct_key_id=id,status="approved_by_manager")
-                notification.objects.create(changes_made="rejected_by_manager")
+                notification.objects.create(changes_made="modified_by_manager",appntment_id=appointment_id)
                 response="modified"
         else:
             response="not assigned doctor"
@@ -98,8 +104,11 @@ def reject_appointment(request):
         data= json.loads(request.body)
         patient_id=data["patient_id"]
         status=data['activity']
+        appntment = appointment.objects.filter(patient_id=patient_id).values()
+        appointment_data= appntment[0]
+        appointment_id=appointment_data["id"]
         appointment.objects.filter(patient_id=patient_id).update(status="rejected")
-        notification.objects.create(changes_made="rejected_by_manager")
+        notification.objects.create(changes_made="rejected_by_manager",appntment_id=appointment_id)
         response="rejected"
     return JsonResponse(response,safe=False)
 
@@ -107,7 +116,7 @@ def reject_appointment(request):
 def assign_department(request):
     if request.method=="GET":
         department= list(registrationd.objects.filter(status="approved").values("department"))
-        print(department)
+        # print(department)
     return JsonResponse(department,safe=False)
 
 #for assignment of doctor

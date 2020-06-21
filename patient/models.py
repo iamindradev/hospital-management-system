@@ -38,8 +38,8 @@ class notification(models.Model):
    date_of_notificaton = models.DateField(auto_now_add=True)
    time_of_notificaton = models.TimeField(auto_now_add=True)
    changes_made = models.CharField(max_length = 150,default="pending")
-   patient = models.ForeignKey('registrationp', on_delete='DO_NOTHING', null= True)
-   doct_key = models.ForeignKey('doctor.registrationd', on_delete='DO_NOTHING', null= True)
+   appntment = models.ForeignKey('appointment', on_delete="DO_NOTHING", null= True)
+   
    
    
    

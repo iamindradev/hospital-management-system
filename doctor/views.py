@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import registrationd
-from patient.models import appointment, registrationp
+from patient.models import appointment, registrationp,notification
 import json
 # reister
 def register(request):
     if request.method == "POST":
         data_doctor = json.loads(request.body)
-        # registrationd.objects.create(**data_doctor)
-        respone="sucess"
+        registrationd.objects.create(**data_doctor)
+        respone="success"
     return JsonResponse(respone,safe = False)
 #login doctor
 def logind(request):
@@ -52,18 +52,25 @@ def pending_appointments(request):
 def approve_appointment(request):
     if request.method =="POST":
         data= json.loads(request.body)
-        patient_id=data['id']
+        patient_id=data['patient_id']
         status=data['activity']
+        appntment = appointment.objects.filter(patient_id=patient_id).values()
+        appointment_data= appntment[0]
+        appointment_id=appointment_data["id"]
+        print(patient_id, status)
         if status=="approved":
-            appointment.objects.filter(patient_id=patient_id).update(status="approved_by_both",doct_key_id=id)
+            appointment.objects.filter(patient_id=patient_id).update(status="approved_by_both")
+            notification.objects.create(changes_made="approved_by_doctor",appntment_id= appointment_id)
             response="approved"
+            return JsonResponse(response,safe=False) 
         elif status=="modified":
             date_for_app = data['date_for_app']
             time_for_app = data['time_for_app']
             appointment.objects.filter(patient_id=patient_id).update(date_for_app=date_for_app,time_for_app=time_for_app,
-            doct_key_id=id,status="approved_by_doctor")
+            status="approved_by_both")
+            notification.objects.create(changes_made="modified_by doctor",appntment_id=appointment_id)
             response="modified"
-    return JsonResponse(response,safe=False)          
+            return JsonResponse(response,safe=False)          
 
 
 #reject approval
@@ -72,6 +79,10 @@ def reject_appointment(request):
         data= json.loads(request.body)
         patient_id=data["patient_id"]
         status=data['activity']
+        appntment = appointment.objects.filter(patient_id=patient_id).values()
+        appointment_data= appntment[0]
+        appointment_id=appointment_data["id"]
         appointment.objects.filter(patient_id=patient_id).update(status="rejected_by_doctor")
+        notification.objects.create(changes_made="rejected_by_doctor",appntment_id=appointment_id)
         response="rejected"
     return JsonResponse(response,safe=False)
