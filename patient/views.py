@@ -61,8 +61,7 @@ def notifi(request):
         if notification.objects.filter(appntment_id__patient_id=patient_id, status="active").exists() == True:
             response = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification',
             'time_of_notification','changes_made','change_made_by'))
-            # notification.objects.filter(appntment_id__patient_id=patient_id).update(status="seen")
-            
+
         else:
             response="no new notification"
 
