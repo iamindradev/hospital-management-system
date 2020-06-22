@@ -6,4 +6,7 @@ urlpatterns = [
     path('login/', views.logind, name="login"),
     path('pending_appointments/', views.pending_appointments ,name='pending_app'),#for showing the details of pending appointment of patient
     path('approve_appointments/',views.approve_appointment ,name='approve_app'), #for modification and approval of apponintment of patient
+    path('generate_report/', views.generate_report, name='generate'),
+    path('submit_report/',views.submit_report,name='submit_report'),
+    # path('get_report/',views.get_report, name='get_report')
 ]
