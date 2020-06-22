@@ -15,12 +15,11 @@ class registrationd(models.Model):
    previous_exp=models.IntegerField(null= True)
 
 class report(models.Model):
-   # patient = models.ForeignKey('patient.registrationp', on_delete="DO_NOTHING",null=True)
-   # doct_key = models.ForeignKey('registrationd', on_delete="DO_NOTHING", null=True)
+   date_of_report = models.DateField(auto_now=True)
+   time_of_report = models.TimeField(auto_now=True)
    appntment = models.ForeignKey('patient.appointment', on_delete="DO_NOTHING", null= True)
    prescription = models.CharField(max_length = 150)
    further_ins = models.CharField(max_length = 150, null= True)
-   # status = models.CharField(max_length = 150, null = True)
    
 
 
