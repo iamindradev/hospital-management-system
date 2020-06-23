@@ -47,8 +47,8 @@ def make_appointment(request):
             disease=data_of_app['disease']
             date_for_app=data_of_app['date_for_app']
             time_for_app=data_of_app['time_for_app']
-            print(patient_id)
-            print(list(data_of_app))
+            # print(patient_id)
+            # print(list(data_of_app))
             appointment.objects.create(disease=disease,date_for_app=date_for_app,time_for_app=time_for_app,patient_id=patient_id)
             response="added"
             return JsonResponse(response, safe= False)
@@ -60,16 +60,19 @@ def notifi(request):
         patient_id =data['id']
         if notification.objects.filter(appntment_id__patient_id=patient_id, status="active").exists() == True:
             response = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification',
-            'time_of_notification','changes_made','change_made_by'))
-
+            'time_of_notification','changes_made','changes_made_by').order_by('-time_of_notification','-date_of_notification'))
+            # print(response)
+        
         else:
             response="no new notification"
 
     return JsonResponse(response ,safe= False)
 
-
-#----------------------------------------------------------------------------------------------------------------------------
-# def all_data(request):
-#     if request.method=="GET":
-#         data= list(appointment.object.filter())
-#     return JsonResponse(data, safe= False)
+#cancel of request
+def cancelapp(request):
+    if request.method =="POST":
+        data= json.loads(request.body)
+        patient_id=data['id']
+        appointment.objects.filter(patient_id= patient_id).update(status="canceled")
+        response = "canceled appointment"
+    return JsonResponse(response, safe = False)

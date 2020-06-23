@@ -85,14 +85,14 @@ def approve_appointment(request):
         if id != "NULL":
             if status=="approved":
                 appointment.objects.filter(patient_id=patient_id).update(status="approved_by_manager",doct_key_id=id)
-                notification.objects.create(changes_made="approved",change_made_by="manager",status="active",appntment_id=appointment_id)
+                notification.objects.create(changes_made="approved",changes_made_by="manager",status="active",appntment_id=appointment_id)
                 response="approved"
             elif status=="modified":
                 date_for_app = data['date_for_app']
                 time_for_app = data['time_for_app']
                 appointment.objects.filter(patient_id=patient_id).update(date_for_app=date_for_app,time_for_app=time_for_app,
                 doct_key_id=id,status="approved_by_manager")
-                notification.objects.create(changes_made="modified",change_made_by="manager",status="active",appntment_id=appointment_id)
+                notification.objects.create(changes_made="modified",changes_made_by="manager",status="active",appntment_id=appointment_id)
                 response="modified"
         else:
             response="not assigned doctor"
@@ -108,7 +108,7 @@ def reject_appointment(request):
         appointment_data= appntment[0]
         appointment_id=appointment_data["id"]
         appointment.objects.filter(patient_id=patient_id).update(status="rejected")
-        notification.objects.create(changes_made="rejected",change_made_by="manager",status="active",appntment_id=appointment_id)
+        notification.objects.create(changes_made="rejected",changes_made_by="manager",status="active",appntment_id=appointment_id)
         response="rejected"
     return JsonResponse(response,safe=False)
 

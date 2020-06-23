@@ -24,6 +24,8 @@ class appointment(models.Model):
    date_for_app = models.DateField()
    time_for_app=models.TimeField()
    status=models.CharField(max_length=50, default="pending")
+   status_of_report = models.CharField(max_length = 150, default="pending")
+   
 
 
 
