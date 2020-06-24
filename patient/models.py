@@ -12,7 +12,7 @@ class registrationp(models.Model):
    gender=models.CharField(max_length=50)
    height=models.IntegerField()
    weight=models.IntegerField()
-   medical_history=models.CharField( max_length=50)
+   # medical_history=models.CharField( max_length=50)
 
 
    
@@ -25,9 +25,8 @@ class appointment(models.Model):
    time_for_app=models.TimeField()
    status=models.CharField(max_length=50, default="pending")
    status_of_report = models.CharField(max_length = 150, default="pending")
+   payment = models.CharField(max_length = 150,default="no")
    
-
-
 
 #class for notification of status of appointment by patient
 class notification(models.Model):
