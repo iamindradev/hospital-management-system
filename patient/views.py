@@ -1,17 +1,17 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from doctor.models import registrationd, report
-from .models import registrationp, appointment,notification
+from doctor.models import registrationd,  report
+from .models import registrationp,  appointment, notification
 from django.core.exceptions import ObjectDoesNotExist
 import json
-from django.db.models import Count, Max
+from django.db.models import Count,  Max
 #registration of patient
 def register(request):
     if request.method=="POST":
         data_register=json.loads(request.body)
         registrationp.objects.create(**data_register)
         response="sucess"
-    return JsonResponse(response,safe= False)
+    return JsonResponse(response, safe= False)
 
 #login of patient
 def loginp(request):
@@ -19,18 +19,18 @@ def loginp(request):
         data_for_login=json.loads(request.body)
         email_id= data_for_login['email']
         password= data_for_login['password']
-        print(email_id, password)
+        print(email_id,  password)
         if registrationp.objects.filter(email=email_id).exists() == True:
-            if registrationp.objects.filter(email=email_id, password=password).exists() == True:
-                data_to_return =list(registrationp.objects.filter(email=email_id).values('first_name',
-                'last_name','email','mobile_number','age','blood_group','gender','height','weight','id'))
+            if registrationp.objects.filter(email=email_id,  password__iexact=password).exists() == True:
+                data_to_return =list(registrationp.objects.filter(email=email_id).values('first_name', 
+                'last_name', 'email', 'mobile_number', 'age', 'blood_group', 'gender', 'height', 'weight', 'id'))
                 # print(data_to_return)
             else:
                 data_to_return="wrong password"
         else:
             data_to_return="not registered"
     
-    return JsonResponse(data_to_return ,safe=False)
+    return JsonResponse(data_to_return , safe=False)
 
 #make appointment
 def make_appointment(request):
@@ -40,9 +40,9 @@ def make_appointment(request):
         patient=list(registrationp.objects.filter(email=email).values('id'))
         id_dict=patient[0]
         patient_id=id_dict["id"]
-        if appointment.objects.filter(patient_id=patient_id,status="pending").exists() == True:
+        if appointment.objects.filter(patient_id=patient_id, status="pending").exists() == True:
             response="you already have a pending appointment"
-            return JsonResponse(response, safe= False)
+            return JsonResponse(response,  safe= False)
 
         else:  
             disease=data_of_app['disease']
@@ -50,26 +50,75 @@ def make_appointment(request):
             time_for_app=data_of_app['time_for_app']
             # print(patient_id)
             # print(list(data_of_app))
-            appointment.objects.create(disease=disease,date_for_app=date_for_app,time_for_app=time_for_app,patient_id=patient_id)
+            appointment.objects.create(disease=disease, date_for_app=date_for_app, time_for_app=time_for_app, patient_id=patient_id)
             response="added"
-            return JsonResponse(response, safe= False)
+            return JsonResponse(response,  safe= False)
 
-#notification
+#notification logic 2
 def notifi(request):
     if request.method =="POST":
         data= json.loads(request.body)
         patient_id =data['id']
-        if notification.objects.filter(appntment_id__patient_id=patient_id, status="active").exists() == True:
-            active_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification',
-            'time_of_notification','changes_made','changes_made_by').order_by('-time_of_notification','-date_of_notification'))
-            notification.objects.filter(appntment_id__patient_id=patient_id, status="active").update(status="seen")
-            # print(response)
-        
-        passive_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification',
-        'time_of_notification','changes_made','changes_made_by').order_by('-time_of_notification','-date_of_notification'))
-        notice ={"active":active_noti,"passive":passive_noti}
+        approved_seen=list(notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="approved", status="seen").values('date_of_notification', 
+                'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 
+                'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
+        approved_active=list(notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="approved", status="active").values('date_of_notification', 
+             'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 
+             'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
 
-    return JsonResponse(notice,safe= False)
+        notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="approved", status="active").update(status="seen")
+        
+        modified_seen=list(notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="modified", status="seen").values('date_of_notification', 
+                'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 
+                'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
+        modified_active=list(notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="modified", status="active").values('date_of_notification', 
+                'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 
+                'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
+
+        notification.objects.filter(appntment_id__patient_id=patient_id, changes_made="modified", status="active").update(status="seen")
+
+        notice={"approved_active":approved_active, "approved_seen":approved_seen, "modified_active":modified_active, "modified_seen":modified_seen}
+    return JsonResponse(notice, safe= False)
+#notification logic 1
+# def notifi(request):
+#     if request.method =="POST":
+#         data= json.loads(request.body)
+#         patient_id =data['id']
+#         modified_array=[]
+#         if notification.objects.filter(appntment_id__patient_id=patient_id,  status="active").exists() == True:
+#             active_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification', 
+#             'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 'appntment_id__date_for_app','appntment_id', 
+#             'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
+#             notification.objects.filter(appntment_id__patient_id=patient_id,  status="active").update(status="seen")
+#             print(active_noti)
+#             for i in active_noti:
+#                 change = i['changes_made']
+#                 if change=='modified':
+#                     date=i['appntment_id__date_for_app']'appntment_id',
+#                     time=i['appntment_id__time_for_app']
+#                     modified_array.append(date)
+#                     modified_array.append(time)
+
+#             print(modified_array)
+
+#         else:
+#             active_noti="now new noti"
+#         if notification.objects.filter(appntment_id__patient_id=patient_id, status="seen"):
+#            passive_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification', 
+#             'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 'appntment_id__date_for_app','appntment_id', 
+#             'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
+#            print(passive_noti)
+#            for i in passive_noti:
+#                 change = i['changes_made']
+#                 if change=='modified':
+#                     date=i['appntment_id__date_for_app']'appntment_id',
+#                     time=i['appntment_id__time_for_app']
+#                     modified_array.append(date)
+#                     modified_array.append(time)
+#         print(modified_array)
+#         notice ={"active":active_noti, "passive":passive_noti, "modified":modified_array}
+
+#     return JsonResponse(notice, safe= False)
 
 #cancel of request
 def cancelapp(request):
@@ -78,20 +127,20 @@ def cancelapp(request):
         patient_id=data['id']
         appointment.objects.filter(patient_id= patient_id).update(status="canceled")
         response = "canceled appointment"
-    return JsonResponse(response, safe = False)
+    return JsonResponse(response,  safe = False)
 
 #name of the doctoo they visit often
 def often(request):
     if request.method == "POST":
         data = json.loads(request.body)
         patient_id = data['id']
-        data_list=list(appointment.objects.filter(patient_id=patient_id).values('doct_key_id__first_name',
+        data_list=list(appointment.objects.filter(patient_id=patient_id).values('doct_key_id__first_name', 
         'doct_key_id__last_name').annotate(c=Count('doct_key_id')).order_by('-c'))
         data_=data_list[0]
         fname=data_['doct_key_id__first_name']
         lname=data_['doct_key_id__last_name']
-        doctor={"fname":fname,"lname":lname}
-    return JsonResponse(doctor, safe = False)
+        doctor={"fname":fname, "lname":lname}
+    return JsonResponse(doctor,  safe = False)
 
 
 #all report
@@ -99,19 +148,19 @@ def all_report(request):
     if request.method =="POST":
         data= json.loads(request.body)
         patient_id=data['id']
-        reports=list(report.objects.filter(appntment_id__patient_id= patient_id,).values('prescription', 'further_ins','date_of_report',
-        'appntment_id__doct_key_id__first_name','appntment_id__doct_key_id__last_name','appntment_id__disease','time_of_report',
-        'appntment_id__patient_id__first_name','appntment_id__patient_id__last_name','appntment_id__doct_key_id__department',
+        reports=list(report.objects.filter(appntment_id__patient_id= patient_id, ).values('prescription',  'further_ins', 'date_of_report', 
+        'appntment_id__doct_key_id__first_name', 'appntment_id__doct_key_id__last_name', 'appntment_id__disease', 'time_of_report', 
+        'appntment_id__patient_id__first_name', 'appntment_id__patient_id__last_name', 'appntment_id__doct_key_id__department', 
         ))
-    return JsonResponse(reports, safe = False)
+    return JsonResponse(reports,  safe = False)
 
 #for fetching all appointments
 def all_appointments(request):
     if request.method == "POST":
         data=json.loads(request.body)
         patient_id = data['id'] 
-        appointment_data=list(appointment.objects.filter(status_of_report="generated",patient_id=patient_id).values('id',
-        'doct_key_id__first_name','doct_key_id__last_name','disease','date_for_app','time_for_app'))
-    return JsonResponse(appointment_data,safe= False)
+        appointment_data=list(appointment.objects.filter(status_of_report="generated", patient_id=patient_id).values('id', 
+        'doct_key_id__first_name', 'doct_key_id__last_name', 'disease', 'date_for_app', 'time_for_app'))
+    return JsonResponse(appointment_data, safe= False)
 
 
