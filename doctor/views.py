@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from .models import registrationd,report
 from patient.models import appointment, registrationp,notification
 import json
+from django.db.models import Count
 # reister
 def register(request):
     if request.method == "POST":
@@ -24,13 +25,13 @@ def logind(request):
                 passwd = data["password"]
                 print(passwd)
                 if password ==passwd :
-                    print(data)  
+                    # print(data)  
                     data_r=list(registrationd.objects.filter(email = email).values("first_name","last_name",
                     "email","mobile_number","age","gender","previous_exp","qualification","department","id"))
                     pending_appointment = appointment.objects.filter(status = "approve_by_manager").count()
                     data_return={"data_r":data_r, "pending_appointment":pending_appointment}
                     return JsonResponse(data_return ,safe = False)
-                    print(data_return)
+                    # print(data_return)
             else:
                 data_return="wrong password"
         else:
@@ -42,10 +43,10 @@ def pending_appointments(request):
     if request.method == "POST":
         data=json.loads(request.body)
         doct_key_id= data['id']
-        print(doct_key_id)
+        # print(doct_key_id)
         data_of_appointment = list(appointment.objects.filter(status__contains="approved_by_manager",doct_key_id=
         doct_key_id).values('disease','date_for_app','time_for_app',"patient_id").order_by('date_time_of_app'))
-        print(data_of_appointment)
+        # print(data_of_appointment)
     return JsonResponse(data_of_appointment , safe = False)
 
 
@@ -58,7 +59,7 @@ def approve_appointment(request):
         appntment = appointment.objects.filter(patient_id=patient_id).values()
         appointment_data= appntment[0]
         appointment_id=appointment_data["id"]
-        print(patient_id, status)
+        # print(patient_id, status)
         if status=="approved":
             appointment.objects.filter(patient_id=patient_id).update(status="approved_by_both")
             notification.objects.create(changes_made="approved",changes_made_by="doctor",status="active",appntment_id=
@@ -97,7 +98,7 @@ def generate_report(request):
         doct_key_id=data['id']
         response=list(appointment.objects.filter(doct_key_id=doct_key_id,status_of_report="pending",status="approved_by_both").values('id', 
         'date_for_app','disease','time_for_app'))
-    print(response)
+    # print(response)
     return JsonResponse(response ,safe= False)
 #submit report
 def submit_report(request):
@@ -109,6 +110,8 @@ def submit_report(request):
         appointment.objects.filter(id=appntment_id).update(status_of_report="generated")
         response="report created"
     return JsonResponse(response, safe= False)
+
+
 #get report of patient after creating by doctor
 def get_report(request):
     if request.method=="POST":
@@ -118,6 +121,7 @@ def get_report(request):
         'appntment_id__doct_key_id__first_name','appntment_id__doct_key_id__last_name','appntment_id__disease','time_of_report',
         'appntment_id__patient_id__first_name','appntment_id__patient_id__last_name','appntment_id__doct_key_id__department',
         ))
+        # print(report_data)
     return JsonResponse(report_data, safe=False)
 #patient list whose request has been created
 def report_list(request):
@@ -128,12 +132,13 @@ def report_list(request):
         values('id','patient_id__first_name','patient_id__last_name','disease','date_for_app','time_for_app'))
     return JsonResponse(list_data,safe= False)
 
-
 #patient list under individual doctor created
 def patient_list(request):
     if request.method =="POST":
         data = json.loads(request.body)
         doct_key_id=data['id']
-        list_data=list(appointment.objects.filter(doct_key_id=doct_key_id).values('id','patient_id__first_name','patient_id',
-        'patient_id__age','patient_id__mobile_number','patient_id__last_name','patient_id__count'))
-    return JsonResponse(list_data,safe= False)      
+        # list_data=list(appointment.objects.filter(doct_key_id=doct_key_id).values('id',))
+        count_of_app=list(appointment.objects.values('patient_id__first_name','patient_id',
+        'patient_id__age','patient_id__mobile_number','patient_id__last_name').annotate(Count('id')))   
+    return JsonResponse(count_of_app,safe= False)   
+   
