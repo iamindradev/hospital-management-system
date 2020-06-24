@@ -12,4 +12,7 @@ urlpatterns = [
     path('assign_doctor/',views.assign_doctor,name='doctor'),#for sending the data of doctor for assignment of patient
     path('assign_department/',views.assign_department, name="department",),#for sending the data of department for assignment of patient.
     path('reject_appointment/',views.reject_appointment, name='reject'),#for rejecting request
+    path('see_details_patient/', views.see_details_patient, name='see_details'),
+    path('see_details_doctor/', views.see_details_doctor, name='see_details_doct'),
+    path('all_appointment/', views.all_appointments, name='all_appointments'),
 ]
