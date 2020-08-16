@@ -1,0 +1,128 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <!-- CSS only -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+      <!-- JS, Popper.js, and jQuery -->
+      <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+            </script> -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+          integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+      </script>
+
+      <!-- <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script> -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+      <script src="generate-report.js"></script>
+      <script src="/Hospital-MS/BASE_URL.js"></script>
+      <title>Generate Report</title>
+  </head>
+
+  <body ng-app="myApp">
+      <style>
+          body {
+              background-color: #eaf2f3;
+              font-family: sans-serif;
+              letter-spacing: 1px;
+          }
+
+          .appointments-list-box {
+              background-color: #ffffff;
+              box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+              height: 100vh;
+              border-radius: 20px;
+              text-align: left;
+              padding: 2% 0px 5% 6%;
+              margin: 0px 0px 3% 0%;
+          }
+
+          .appointments-list-heading {
+              /* font-size: 35px; */
+              letter-spacing: 2px;
+              color: #135e71;
+              text-align: center;
+              /* padding: 0% 0px 0% 6%; */
+          }
+
+          .report-box {
+              background-color: #faf9fa;
+          }
+
+          .prescription-box,
+          .further-instruction {
+              width: 70%;
+              margin-left: 15%;
+              padding: 2%;
+              border: 2px solid #14a8b0;
+              font-size: 2.5vh;
+              transition: all 0.5s;
+              transition-timing-function: ease;
+              border-radius: 15px;
+              outline: none;
+              /* background: none; */
+          }
+
+          .prescription-box:valid,
+          .further-instruction:valid {
+              border: 2px solid #35b339;
+          }
+
+          label {
+              margin-left: 15%;
+              font-size: 3vh;
+              padding-top: 2%;
+          }
+
+          .btn-input {
+              width: 30%;
+              margin-left: 35%;
+              padding: 1%;
+              margin-top: 2%;
+              margin-bottom: 2%;
+              background-color: #9f0b61;
+              color: #ffffff;
+              border-radius: 10px;
+          }
+
+          .btn-input:hover {
+              background-color: #1464b3;
+          }
+      </style>
+      <div class="container-fluid" ng-controller="generateReportController">
+          <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 appointments-list-box">
+                  <h1 class="appointments-list-heading">Make Report{{name}}</h1>
+                  <br><br>
+                  <div class="appointments-form">
+                      <div class="row">
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>
+                          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 report-box">
+                              <label for="prescription">Prescription</label>
+                              <br>
+                              <textarea name="prescription" id="prescription" class="prescription-box" rows="5"
+                                  placeholder="Enter Prescription" required></textarea>
+                              <br>
+                              <label for="further-instruction">Further Instruction</label> <br>
+                              <textarea name="further-instruction" id="instruction" class="further-instruction"
+                                  placeholder="Enter Further Instruction" rows="3" required></textarea>
+                              <br>
+                              <input type="button" value="Fix Appoitnment" class="btn-input" ng-click="makereport()">
+                          </div>
+                          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </body>
+
+  </html>

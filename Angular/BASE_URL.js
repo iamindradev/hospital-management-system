@@ -1,0 +1,1 @@
+var BASE_URL = "https://d378b5057702.ngrok.io/doctor/";

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+            </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+    <script src="doctor-detail.js"></script>
+    <script src="/Hospital-MS/BASE_URL.js"></script>
+    <title>Doctor Dashboard</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: #f5f6f8;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+            color: #082026;
+        }
+
+        .profile-box {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            width: 100%;
+            margin: 3% 0px 3% 0%;
+            height: 34vh;
+            text-align: center;
+            border-radius: 12px;
+            padding: 3%;
+            letter-spacing: 1px;
+        }
+
+        .profile-pic {
+            height: 140px;
+            width: 140px;
+            border-radius: 25%;
+            padding: 3%;
+        }
+
+        .doctor-age {
+            color: #5c6d71;
+        }
+
+        .doctor-data1,
+        .doctor-data2,
+        .doctor-data3 {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            width: 100%;
+            margin: 2% 0px 2% 2.5%;
+            text-align: center;
+            border-radius: 12px;
+            padding: 3%;
+            letter-spacing: 2px;
+        }
+
+        .fa-edit {
+            color: #25257b;
+            font-size: 45px;
+        }
+
+        .fa-tags {
+            color: #5b1111;
+            font-size: 45px;
+        }
+
+        .fa-mortar-board {
+            color: #13173b;
+            font-size: 45px;
+        }
+
+        .doctor-data-heading {
+            color: #1598a5;
+            padding-top: 4%;
+        }
+
+        .doctor-data {
+            color: #191d2c;
+        }
+
+        .information-box {
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            border-radius: 12px;
+            text-align: left;
+            padding: 6% 0px 5% 6%;
+            font-size: 20px;
+            height: 60vh;
+            line-height: 39px;
+            letter-spacing: 1px;
+            word-break: break-all;
+            margin: 5% 0px 2% 0px;
+        }
+
+        .information-heading {
+            font-size: 170%;
+            letter-spacing: 2px;
+            color: #0f272c;
+            color: #135e71;
+            text-align: left;
+            padding: 3% 0px 0% 6%;
+        }
+
+        .test-report {
+            background-color: #ffffff;
+            color: #111111;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            height: auto;
+            min-height: 70vh;
+            border-radius: 12px;
+            text-align: left;
+            padding: 3% 0px 5% 6%;
+            margin: 3% 0px 3% 0%;
+        }
+
+        .test-report-heading {
+            color: #135e71;
+        }
+
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #dddddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            letter-spacing: 1px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #2497b6;
+            color: white;
+        }
+
+        .btn-class {
+            color: #ffffff;
+            text-transform: capitalize;
+            text-decoration: none;
+            background: #276cc1;
+            border: 1px solid #276cc1;
+            padding: 10px;
+            border-radius: 30px;
+            display: inline-block;
+            transition: all 0.4s ease 0s;
+        }
+
+        .btn-class:hover,
+        .btn-class:focus {
+            border: 1px solid #ffffff;
+            background: #51a8c7;
+            color: #111111;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            /* Force table to not be like tables anymore */
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+            }
+
+            td {
+                /* Behave like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+            }
+        }
+
+        .vertical-1 {
+            padding: 0;
+        }
+    </style>
+    <div class="container-fluid" ng-app="myApp" ng-controller="doctorDetailController">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 vertical-1">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="profile-box">
+                        <img class="profile-pic" src="images/profile.png" alt="profile pic">
+                        <h3 class="doctor-name" id="doctor_name">{{docprofile.first_name}} {{docprofile.last_name}}</h3>
+                        <h5 class="doctor-age"> {{docprofile.age}} Year, {{docprofile.gender}}</h5>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                    <div class="information-box">
+                        <h4 class="information-heading">Information:</h4>
+                        <p>
+                            <strong>Email: </strong> {{docprofile.email}} <br>
+                            <strong>Mobile No: </strong> {{docprofile.mobile_number}} <br>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 ">
+                        <div class="doctor-data1">
+                            <i class="fa fa-mortar-board" aria-hidden="true"></i>
+                            <h5 class="doctor-data-heading">Qualification</h5>
+                            <h2 class="doctor-data">{{docprofile.qualification}}</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 ">
+                        <div class="doctor-data3">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                            <h5 class="doctor-data-heading">Specialist Of</h5>
+                            <h2 class="doctor-data">{{docprofile.department}}</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                        <div class="doctor-data2">
+                            <i class="fa fa-tags" aria-hidden="true"></i>
+                            <h5 class="doctor-data-heading">Experience</h5>
+                            <h2 class="doctor-data">{{docprofile.previous_exp}} Years</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-report">
+                    <h4 class="test-report-heading"><strong>All Patients:</strong></h4>
+                    <br>
+                    <table id="customers">
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Mobile Number</th>
+                            <th>No. Of Time Visited</th>
+                        </tr>
+                        <tr ng-repeat="data in datas">
+                            <td>{{data.patient_id__first_name}} {{data.patient_id__last_name}}</td>
+                            <td>{{data.patient_id__age}}</td>
+                            <td>{{data.patient_id__mobile_number}}</td>
+                            <td>{{data.id__count}}</td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

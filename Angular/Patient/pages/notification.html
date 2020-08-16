@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+            </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: #eaf2f3;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .notification-box {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            min-height: 100vh;
+            border-radius: 20px;
+            text-align: left;
+            padding: 1% 4% 5% 4%;
+            margin: 1% 2% 0% 0%;
+        }
+
+        .notification-heading {
+            /* font-size: 35px; */
+            letter-spacing: 2px;
+            color: #1598a5;
+            text-align: left;
+            /* padding: 0% 0px 0% 6%; */
+        }
+        .notification{
+            border: 1px solid #2f96b3;
+            padding: 2%;
+            margin-top: 2%;
+            font-size: 3vh;
+            border-radius: 15px;
+        }
+        .notification1{
+            border: 2px solid #2fb33e;
+            padding: 2%;
+            margin-top: 2%;
+            font-size: 3vh;
+            border-radius: 15px;
+        }
+        .cancel-btn{
+            background-color: #bf104b;
+            color: #ffffff;
+            width: auto;
+            padding: 1% 0%;
+            text-align: center;
+            margin-left: 80%;
+            border-radius: 10px;
+        }
+    </style>
+    <div class="container-fluid" ng-controller="notificationsController">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 notification-box">
+                <h1 class="notification-heading">Notification:</h1>
+                    <div class="notification1" ng-repeat="data in datas2">
+                        Your Appointment current status is <strong>{{data.changes_made}} </strong> and it was last
+                        changed by <strong>{{data.changes_made_by}} </strong> on {{data.date_of_notification}} at
+                        {{data.time_of_notification}}. Your Appointment Date Now is
+                        <strong>{{data.appntment_id__date_for_app}} </strong> and
+                        time is <strong>{{data.appntment_id__time_for_app}}</strong>.
+                        <br>
+                        <button class="cancel-btn" type="submit" value="{{data.appntment_id}}" onclick="sendAppId(value)" ng-click="cancelappointment()">Cancel
+                            Appointment</button>
+                    </div>
+                    <div class="notification1" ng-repeat="data in datas1">
+                        Your Appointment current status is <strong>{{data.changes_made}} </strong> and it was last
+                        changed by <strong>{{data.changes_made_by}} </strong> on {{data.date_of_notification}} at
+                        {{data.time_of_notification}}.
+                        <br>
+                        <button class="cancel-btn" type="submit" value="{{data.appntment_id}}"
+                            onclick="sendAppId(value)" ng-click="cancelappointment()">Cancel
+                            Appointment</button>
+                    </div>
+                    <div class="notification" ng-repeat="data in datas3">
+                        Your Appointment current status is <strong>{{data.changes_made}} </strong> and it was last
+                        changed by <strong>{{data.changes_made_by}} </strong> on {{data.date_of_notification}} at
+                        {{data.time_of_notification}}. Your Appointment Date Now is
+                        <strong>{{data.appntment_id__date_for_app}} </strong> and
+                        time is <strong>{{data.appntment_id__time_for_app}}</strong>.
+                        <br>
+                        <button class="cancel-btn" type="submit" value="{{data.appntment_id}}"
+                            onclick="sendAppId(value)" ng-click="cancelappointment()">Cancel
+                            Appointment</button>
+                    </div>
+                    <div class="notification" ng-repeat="data in datas">
+                        Your Appointment current status is <strong>{{data.changes_made}} </strong> and it was last
+                        changed by <strong>{{data.changes_made_by}} </strong> on {{data.date_of_notification}} at
+                        {{data.time_of_notification}}.
+                        <br>
+                        <button class="cancel-btn" type="submit" value="{{data.appntment_id}}"
+                            onclick="sendAppId(value)" ng-click="cancelappointment()">Cancel
+                            Appointment</button>
+                    </div>
+                </div>
+                
+            </di>
+        </div>
+    </div>
+</body>
+
+</html>

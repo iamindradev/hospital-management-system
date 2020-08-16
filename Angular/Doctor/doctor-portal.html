@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="cdn/angular.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
+    <script src="cdn/angular-ui-router.min.js"></script>
+    <script src="doctor-portal.js"></script>
+    <script src="/Hospital-MS/BASE_URL.js"></script>
+    <title>Doctor Portal</title>
+</head>
+
+<body>
+    <style>
+        .wrap-box {
+            background-color: #f5f5f5;
+            height: 100vh;
+            margin-left: 22vh;
+        }
+
+        .sidenav-box {
+            background-color: #0a586c;
+            height: 100vh;
+            position: fixed;
+            width: 20vh;
+            text-align: center;
+        }
+
+        /* .sidenav-box> a{
+            color: #7aa4ae;
+        } */
+        .sidenav-box>a {
+            color: #7aa4ae;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .sidenav-box>a:hover {
+            color: #ffffff;
+        }
+
+        .sidenav-box>a>i {
+            color: #7aa4ae;
+            font-size: 35px;
+            transition: all 0.2s ease;
+        }
+
+        .sidenav-box>a>i:hover {
+            color: #ffffff;
+        }
+    </style>
+    <div ng-app="myApp" ng-controller="docPortalController">
+
+        <div class="sidenav-box">
+            <br><br>
+            <a ui-sref="signupmessage({e:11, f:10})">
+                <i class="fa fa-user-md" aria-hidden="true"></i> <br>
+                <strong>Dashboard</strong></a> <br><br>
+            <a ui-sref="allpatientmessage({a:10, b:10})">
+                <i class="fa fa-list" aria-hidden="true"></i> <br>
+                <strong>All Patients</strong></a> <br><br>
+            <a ui-sref="allreportmessage({i:18, j:10})">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> <br>
+                <strong>All Reports</strong></a> <br><br>
+            <a ui-sref="appointmentmessage({c:12, d:10})">
+                <i class="fa fa-bell-o" aria-hidden="true"></i> <br>
+                <strong>Pending <br> Appointments</strong></a> <br><br>
+            <a ui-sref="reportmessage({g:10, h:6})">
+                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> <br>
+                <strong>Make Report</strong></a> <br><br>
+            <a href="doctor-login.html">
+                <i class="fa fa-sign-out" aria-hidden="true"></i> <br>
+                <strong>Log Out</strong></a>
+        </div>
+        <div class="wrap-box">
+            <div class="ui-view">
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+            </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: #eaf2f3;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .appointments-list-box {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.14);
+            height: 100vh;
+            border-radius: 20px;
+            text-align: left;
+            padding: 2% 0px 5% 6%;
+            margin: 0px 0px 3% 0%;
+        }
+
+        .appointments-list-heading {
+            /* font-size: 35px; */
+            letter-spacing: 2px;
+            color: #1598a5;
+            text-align: left;
+            /* padding: 0% 0px 0% 6%; */
+        }
+        .appointments-list{
+            padding: 4%;
+            background-color: #c9236e61;
+            border-radius: 15px;
+        }
+        .disease-input, .date-input, .time-input, .btn-input{
+            width: 60%;
+            margin-left: 20%;
+            padding: 2%;
+            border: 1px solid #122e54;
+            border-radius: 10px;
+        }
+        label{
+            margin-left: 20%;
+            margin-top: 2%;
+        }
+        #out_data{
+        text-align: center;
+        font-size: 25px;
+        color: #a52b50;
+        }
+        .btn-class {
+        margin-top: 3%;
+        width: 50%;
+        margin-left: 25%;
+        color: #ffffff;
+        text-transform: capitalize;
+        text-decoration: none;
+        background: #276cc1;
+        outline: none;
+        border: 1px solid #276cc1;
+        padding: 10px;
+        border-radius: 30px;
+        display: inline-block;
+        transition: all 0.4s ease 0s;
+        }
+
+        .btn-class:hover,
+        .btn-class:focus {
+            outline: none;
+        border: 1px solid #ffffff;
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+        background: #51a8c7;
+        color: #111111;
+        }
+    </style>
+    <div class="container-fluid" ng-controller="appointmentController">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 appointments-list-box">
+                <h1 class="appointments-list-heading">Make Appointment:{{name}}</h1>
+                <br><br>
+                <div class="appointments-form">
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 appointments-list">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                    <label for="disease">Disease</label> <br>
+                                    <input type="text" name="disease" placeholder="Enter Consultance You Want"
+                                        class="disease-input" id="disease1">
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <label for="date">Date Of Appointment <br></label>
+                                    <input type="date" id="date1" class="date-input" value="2020-06-17" required
+                                        min="2020-06-17" max="2020-07-29" pattern="\d{4}-\d{2}-\d{2}">
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <label for="time">Time For App</label>
+                                    <input type="time" id="time1" class="time-input">
+                                </div>
+                                
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <button class="btn-class" ng-click="makeappointment()">Fix Appointment</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>
+                    </div>
+                </div> <br><br>
+                <div id="out_data"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.min.js"></script>
+    <title>PRS-Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="doctor-registration.js"></script>
+    <script src="/Hospital-MS/BASE_URL.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="registrationController">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-image: linear-gradient(to right top, #beadc5, #c2aec4, #c5afc2, #c8b1c1, #cab2c0, #cbb4c3,
+                    #ccb7c6, #cdb9c9, #cdbdd0, #ccc2d7, #cbc7de, #c9cce4);
+        }
+
+        .wrap {
+            box-shadow: 2px 5px 35px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .loginbox {
+            background-color: #ffffff;
+        }
+
+        .box-left {
+            background: url("images/6.jpeg");
+            background-size: cover;
+            background-position-x: 50%;
+        }
+
+        .heading-loginbox {
+            background: -webkit-linear-gradient(#113b45, #428e9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            padding: 3% 0px;
+            font-size: 5vh;
+            font-weight: 550;
+            letter-spacing: 2px;
+        }
+
+        label {
+            margin-left: 10%;
+            letter-spacing: 2px;
+            margin-top: 5%;
+            font-size: 2.5vh;
+        }
+
+        .label1 {
+            margin-left: 15%;
+            letter-spacing: 2px;
+            margin-top: 5%;
+            font-size: 2.5vh;
+        }
+
+        input {
+            width: 90%;
+            padding: 2.8% 1% 2.8% 4%;
+            margin: 0% 0px 1% 5%;
+            border: none;
+            background-color: inherit;
+            border-bottom: 1px solid #4a4d73;
+            transition: all 0.5s;
+            transition-timing-function: ease;
+            outline: none;
+            letter-spacing: 1px;
+        }
+
+        input:focus,
+        input:valid,
+        input:visited {
+            border: 2px solid #d6377f;
+            border-radius: 15px;
+            outline: none;
+        }
+
+        .error {
+            font-size: 15px;
+            padding-left: 12%;
+        }
+
+        .error1 {
+            font-size: 15px;
+            padding-left: 20%;
+        }
+
+        select {
+            width: 70%;
+            padding: 2% 2% 2% 4%;
+            margin: 1% 0px 0% 15%;
+            background-color: #335e78;
+            border: 2px solid #428e9a;
+            transition: all 0.8s;
+            color: #ffffff;
+            transition-timing-function: ease;
+            padding: 1vh;
+            letter-spacing: 1PX;
+
+        }
+
+        select:hover,
+        select:focus {
+            border: 2px solid #efecf5;
+            box-shadow: 2px 5px 15px 1px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        option {
+            background-color: #413b58;
+        }
+
+        .signup-btn {
+            background-image: linear-gradient(to right, #1e717a, #558cb3);
+            color: #ffffff;
+            border: 1px solid #333333;
+            width: 100%;
+            padding: 4%;
+            text-align: center;
+            transition: all 0.6s;
+            transition-timing-function: ease;
+            border-radius: 15px;
+        }
+
+        .signup-btn:hover {
+            background-image: linear-gradient(to right, #4b66cf, #735ed0, #9753cb, #b642c1, #d22ab2);
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            box-shadow: 5px 10px 25px #37516d;
+        }
+
+        #out_data {
+            text-align: center;
+            font-size: 25px;
+            color: #843168;
+        }
+
+        .div1 {
+            padding: 0px;
+        }
+
+        .prs {
+            letter-spacing: 3px;
+            color: #EE982B;
+            font-size: 34px;
+        }
+
+        .navbar-toggler-icon {
+            color: white;
+            background-color: none;
+        }
+
+        #navbar-box {
+            /* background-color: rgba(17, 27, 28, 0.2); */
+            background-color: #ffffff;
+            /* border-radius: 10px; */
+            height: 8vh;
+            padding-bottom: 0px;
+            transition: all 0.3s ease;
+        }
+
+        #navlogo {
+            padding-bottom: 0px;
+        }
+
+        .nav-link,
+        #navbtn {
+            color: #EBFCFF;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+    </style>
+    <div class="container-fluid">
+        <nav id="navbar-box" class="navbar navbar-expand-lg navbar-light fixed-top">
+            <a id="navlogo" class="navbar-brand" href="/Hospital-MS/index.html"><img class="logo" src="images/logo6.png"
+                    width="70px" height="117px" alt="GOV LOGO"><strong> <span class="prs">MedFac</span></strong></a>
+            <button id="navbar" class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav navbar-right mr-auto">
+
+                    <li class="nav-item">
+                        <a id="navlink4" class="nav-link" href="/Hospital-MS/index.html">Home</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav navbar-right ">
+                    <li class="nav-item">
+                        <a id="navlink5" class="nav-link" href="doctor-login.html">LogIn <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <br><br><br><br><br><br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-1 col-sm-1 col-12"></div>
+            <div class="col-xl-8 col-lg-8 col-md-10 col-sm-10 col-12 div1">
+                <div class="container-fluid">
+                    <div class="row wrap">
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 box-left"></div>
+                        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 loginbox">
+                            <form>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <h2 class="heading-loginbox">Doctor Registeration</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="firstname">First Name:</label><br>
+                                            <input id="first_name" type="text" name="firstname"
+                                                placeholder="Enter First Name"
+                                                onfocusout="validateFirstName('first_name','firstnameerror')" required
+                                                ng-model="firstname">
+                                            <span class="error" id="firstnameerror" style="color:red"></span>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="lastname">Last Name:</label><br>
+                                            <input id="last_name" type="text" name="lastname"
+                                                placeholder="Enter Last Name"
+                                                onfocusout="validateLastName('last_name','lastnameerror')" required
+                                                ng-model="lastname">
+                                            <span class="error" id="lastnameerror" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="name">Mobile Number:</label><br>
+                                            <input id="mobile_number" type="number" name="mobilenumber"
+                                                placeholder="Enter Mobile No."
+                                                onfocusout="validateNumber('mobile_number','mobilenumbererror')"
+                                                ng-model="mobilenumber" required>
+                                            <span class="error" id="mobilenumbererror" style="color:red"></span>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="email">Email:</label><br>
+                                            <input id="email" type="text" name="email" placeholder="Enter Your Email"
+                                                onfocusout="validateEmail('email','emailerror')" ng-model="email"
+                                                required>
+                                            <span class="error" id="emailerror" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="password">Password:</label><br>
+                                            <input id="password" type="password" name="password"
+                                                placeholder="Enter Your Password"
+                                                onfocusout="validatePassword('password','passworderror')"
+                                                ng-model="password" required>
+                                            <span class="error" id="passworderror" style="color:red"></span>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 lb">
+                                            <label for="cnfpassword">Confirm Password</label><br>
+                                            <input id="cnfpassword" type="password" name="cnfpassword"
+                                                placeholder="Re-Enter Your Password"
+                                                onfocusout="validateCnfPassword('cnfpassword','cnfpassworderror')"
+                                                required>
+                                            <span class="error" id="cnfpassworderror" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 cb">
+                                            <label for="age" class="label1">Age</label>
+                                            <select id="age" class="age" name="age"
+                                                onfocusout="validateAge('age','ageerror')" ng-model="age">
+                                                <option>Age</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                                <option>13</option>
+                                                <option>14</option>
+                                                <option>15</option>
+                                                <option>16</option>
+                                                <option>17</option>
+                                                <option>18</option>
+                                                <option>19</option>
+                                                <option>20</option>
+                                                <option>21</option>
+                                                <option>22</option>
+                                                <option>23</option>
+                                                <option>24</option>
+                                                <option>25</option>
+                                                <option>26</option>
+                                                <option>27</option>
+                                                <option>28</option>
+                                                <option>29</option>
+                                                <option>30</option>
+                                                <option>31</option>
+                                                <option>32</option>
+                                                <option>33</option>
+                                                <option>34</option>
+                                                <option>35</option>
+                                                <option>36</option>
+                                                <option>37</option>
+                                                <option>38</option>
+                                                <option>39</option>
+                                                <option>40</option>
+                                                <option>41</option>
+                                                <option>42</option>
+                                                <option>43</option>
+                                                <option>44</option>
+                                                <option>45</option>
+                                                <option>46</option>
+                                                <option>47</option>
+                                                <option>48</option>
+                                                <option>49</option>
+                                                <option>50</option>
+                                                <option>51</option>
+                                                <option>52</option>
+                                                <option>53</option>
+                                                <option>54</option>
+                                                <option>55</option>
+                                                <option>56</option>
+                                                <option>57</option>
+                                                <option>58</option>
+                                                <option>59</option>
+                                                <option>61</option>
+                                                <option>62</option>
+                                                <option>63</option>
+                                                <option>64</option>
+                                                <option>65</option>
+                                                <option>66</option>
+                                                <option>67</option>
+                                                <option>68</option>
+                                                <option>69</option>
+                                                <option>70</option>
+                                                <option>71</option>
+                                                <option>72</option>
+                                                <option>73</option>
+                                                <option>74</option>
+                                                <option>75</option>
+                                                <option>76</option>
+                                                <option>77</option>
+                                                <option>78</option>
+                                                <option>79</option>
+                                                <option>80</option>
+                                                <option>81</option>
+                                                <option>82</option>
+                                                <option>83</option>
+                                                <option>84</option>
+                                                <option>85</option>
+                                                <option>86</option>
+                                                <option>87</option>
+                                                <option>88</option>
+                                                <option>89</option>
+                                                <option>91</option>
+                                                <option>92</option>
+                                                <option>93</option>
+                                                <option>94</option>
+                                                <option>95</option>
+                                                <option>96</option>
+                                                <option>97</option>
+                                                <option>98</option>
+                                                <option>99</option>
+                                                <option>100</option>
+                                                <option>101</option>
+                                                <option>102</option>
+                                                <option>103</option>
+                                                <option>104</option>
+                                                <option>105</option>
+                                                <option>106</option>
+                                                <option>107</option>
+                                                <option>108</option>
+                                                <option>109</option>
+                                                <option>110</option>
+                                            </select><br>
+                                            <span class="error1" id="ageerror" style="color:red"></span>
+                                        </div>
+                                        <div class="2col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12  cb">
+                                            <label for="gender" class="label1">Gender</label>
+                                            <select name='gender' id="gender"
+                                                onfocusout="validateGender('gender','gendererror')" ng-model="gender">
+                                                <option>Gender</option>
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Other</option>
+                                            </select><br>
+                                            <span class="error1" id="gendererror" style="color:red"></span>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12  cb">
+                                            <label for="department" class="label1">Department</label>
+                                            <select name='department' id="department"
+                                                onfocusout="validateDepartment('department','departmenterror')"
+                                                ng-model="department">
+                                                <option>Department</option>
+                                                <option>Cardiologist</option>
+                                                <option>Ear,Nose and Throat(ENT)</option>
+                                                <option>Gastroenologist</option>
+                                                <option>Neurology</option>
+                                                <option>Nutrition and Dietetics</option>
+                                                <option>Physiotherapy</option>
+                                                <option>Sexual Health</option>
+                                                <option>Obstetrics and Gynecologist Units</option>
+                                            </select><br>
+                                            <span class="error1" id="departmenterror" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 cb">
+                                            <label for="qualification" class="label1">Qualification</label>
+                                            <select id="qualification" class="qualification" name="qualification"
+                                                onfocusout="validateQualification('qualification','qualificationerror')"
+                                                ng-model="qualification">
+                                                <option>Qualification</option>
+                                                <option>MS</option>
+                                                <option>MD</option>
+                                                <option>MSc</option>
+                                                <option>MBBS</option>
+                                                <option>PhD</option>
+                                            </select><br>
+                                            <span class="error1" id="qualificationerror" style="color:red"></span>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 cb cb">
+                                            <label for="experience" class="label1">Experience</label>
+                                            <select name='experience' id="experience"
+                                                onfocusout="validateExperience('experience','experienceerror')"
+                                                ng-model="experience">
+                                                <option>Experience</option>
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                                <option>13</option>
+                                                <option>14</option>
+                                                <option>15</option>
+                                                <option>16</option>
+                                                <option>17</option>
+                                                <option>18</option>
+                                                <option>19</option>
+                                                <option>20</option>
+                                                <option>21</option>
+                                                <option>22</option>
+                                                <option>23</option>
+                                                <option>24</option>
+                                                <option>25</option>
+                                                <option>26</option>
+                                                <option>27</option>
+                                                <option>28</option>
+                                                <option>29</option>
+                                                <option>30</option>
+                                                <option>31</option>
+                                                <option>32</option>
+                                                <option>33</option>
+                                                <option>34</option>
+                                                <option>35</option>
+                                                <option>36</option>
+                                                <option>37</option>
+                                                <option>38</option>
+                                                <option>39</option>
+                                                <option>40</option>
+                                                <option>41</option>
+                                                <option>42</option>
+                                                <option>43</option>
+                                                <option>44</option>
+                                                <option>45</option>
+                                                <option>46</option>
+                                                <option>47</option>
+                                                <option>48</option>
+                                                <option>49</option>
+                                                <option>50</option>
+
+                                            </select><br>
+                                            <span class="error1" id="experienceerror" style="color:red"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- </div> row div<br> -->
+                                    <!-- button row starts -->
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3"></div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                                            <button class="signup-btn" id="signup_btn" type="reset" onclick="onSubmit()"
+                                                ng-click="postdata(firstname, lastname, mobilenumber, email, gender, password, age,department,qualification,experience)">SignUp</button>
+
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3"></div>
+
+                                    </div>
+                                    <br><br>
+                                    <!-- button row end -->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-1 col-sm-1 col-12"></div>
+        </div>
+    </div>
+    <br>
+    <div id="out_data"></div>
+    <br>
+    <br>
+
+</body>
+
+</html>
