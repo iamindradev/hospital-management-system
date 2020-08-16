@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('login/',  views.loginm ,  name = 'login'), #for manager login
+    path('pending_count/', views.pending, name ='pending'),# for number of pending request
     path('all_patient/',  views.all_patient, name='all_patient'), #for displaying all patient on ds of manager
     path('all_doctor/',  views.all_doctor,  name='all_doctor'), #for displaying all doctor on ds of manager
     path('pending_appointments/',  views.pending_appointment , name='pending_app'), #for showing the details of pending appointment of patient

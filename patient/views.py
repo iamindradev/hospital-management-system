@@ -79,46 +79,6 @@ def notifi(request):
 
         notice={"approved_active":approved_active, "approved_seen":approved_seen, "modified_active":modified_active, "modified_seen":modified_seen}
     return JsonResponse(notice, safe= False)
-#notification logic 1
-# def notifi(request):
-#     if request.method =="POST":
-#         data= json.loads(request.body)
-#         patient_id =data['id']
-#         modified_array=[]
-#         if notification.objects.filter(appntment_id__patient_id=patient_id,  status="active").exists() == True:
-#             active_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification', 
-#             'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 'appntment_id__date_for_app','appntment_id', 
-#             'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
-#             notification.objects.filter(appntment_id__patient_id=patient_id,  status="active").update(status="seen")
-#             print(active_noti)
-#             for i in active_noti:
-#                 change = i['changes_made']
-#                 if change=='modified':
-#                     date=i['appntment_id__date_for_app']'appntment_id',
-#                     time=i['appntment_id__time_for_app']
-#                     modified_array.append(date)
-#                     modified_array.append(time)
-
-#             print(modified_array)
-
-#         else:
-#             active_noti="now new noti"
-#         if notification.objects.filter(appntment_id__patient_id=patient_id, status="seen"):
-#            passive_noti = list(notification.objects.filter(appntment_id__patient_id=patient_id).values('date_of_notification', 
-#             'time_of_notification', 'changes_made', 'changes_made_by', 'appntment_id__date_for_app','appntment_id', 'appntment_id__date_for_app','appntment_id', 
-#             'appntment_id__time_for_app').order_by('-time_of_notification', '-date_of_notification'))
-#            print(passive_noti)
-#            for i in passive_noti:
-#                 change = i['changes_made']
-#                 if change=='modified':
-#                     date=i['appntment_id__date_for_app']'appntment_id',
-#                     time=i['appntment_id__time_for_app']
-#                     modified_array.append(date)
-#                     modified_array.append(time)
-#         print(modified_array)
-#         notice ={"active":active_noti, "passive":passive_noti, "modified":modified_array}
-
-#     return JsonResponse(notice, safe= False)
 
 #cancel of request
 def cancelapp(request):
@@ -164,3 +124,9 @@ def all_appointments(request):
     return JsonResponse(appointment_data, safe= False)
 
 
+#trial of multiple database
+def multiple(request):
+    if request.method =="GET":
+        data = list(home_teacher.objects.using(Portal).all())
+    JsonResponse(data ,safe= False)
+        

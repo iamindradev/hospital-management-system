@@ -10,23 +10,28 @@ from django.db.models import Count
 
 #for login
 def loginm(request):
-    if request.method  ==   "POST":
+    if request.method =="POST":
         data  =  json.loads(request.body)
         uname  =  data['username']
         passwd  =  data['password']
         if login.objects.filter(username  =  uname ,  password  =  passwd).exists()  ==   True:
-            pending_appointment  =  appointment.objects.filter(status  =  "pending").count()
-            pending_registration  =  registrationd.objects.filter(status  =  "pending").count()
-            data = {
-                "pending_appointment":pending_appointment, 
-                "pending_registration":pending_registration}
-            # print(data)
+            response="hello manager"
         else:
-            data  =  "you are not manager"
-    return JsonResponse(data,  safe  =  False)
+            response  =  "you are not manager"
+    return JsonResponse(response,  safe  =  False)
 
 
+#for pending requests
+def pending(request):
+    if request.method == "GET":
+        pending_appointment  =  appointment.objects.filter(status  =  "pending").count()
+        pending_registration  =  registrationd.objects.filter(status  =  "pending").count()
+        data = {
+            "pending_appointment":pending_appointment, 
+            "pending_registration":pending_registration}
 
+            # print(data)
+    return JsonResponse(data, safe= False)
 
 #for fetching all patient on manager ds
 
@@ -120,7 +125,7 @@ def approve_registration(request):
 def pending_appointment(request):
     if request.method  ==  "GET":
         data_to_approve  =  list(appointment.objects.filter(status = "pending").values(
-            'disease', 'date_for_app', 'time_for_app', 'patient_id').order_by('date_time_of_app'))
+            'disease', 'date_for_app', 'time_for_app', 'patient_id','id').order_by('date_time_of_app'))
         # print(data_to_approve)
     return JsonResponse(data_to_approve, safe = False)
 
@@ -130,20 +135,19 @@ def approve_appointment(request):
         data =  json.loads(request.body)
         patient_id = data["patient_id"]
         status = data['activity']
-        id = data['doct_key_id']
-        appntment  =  appointment.objects.filter(patient_id = patient_id).values()
-        appointment_data =  appntment[0]
-        appointment_id  =  appointment_data["id"]
+        id_d = data['doct_key_id']
+        appointment_id  =  data["id"]
+        print(appointment_id,id_d,patient_id,status)
         if id !=  "NULL":
             if status ==  "approved":
-                appointment.objects.filter(patient_id = patient_id, id = appointment_id).update(status = "approved_by_manager", payment = 'yes', doct_key_id = id)
+                appointment.objects.filter(id = appointment_id).update(status = "approved_by_manager", payment = 'yes', doct_key_id = id_d)
                 notification.objects.create(changes_made = "approved", changes_made_by = "manager", status = "active", appntment_id = appointment_id)
                 response = "approved"
             elif status ==  "modified":
                 date_for_app  =  data['date_for_app']
                 time_for_app  =  data['time_for_app']
-                appointment.objects.filter(patient_id = patient_id, id = appointment_id).update(date_for_app = date_for_app, time_for_app = time_for_app, 
-                doct_key_id = id, status = "approved_by_manager", payment = 'yes')
+                appointment.objects.filter(id = appointment_id).update(date_for_app = date_for_app, time_for_app = time_for_app, 
+                doct_key_id = id_d, status = "approved_by_manager", payment = 'yes')
                 notification.objects.create(changes_made = "modified", changes_made_by = "manager", status = "active", appntment_id = appointment_id)
                 response = "modified"
         else:

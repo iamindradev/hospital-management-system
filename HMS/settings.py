@@ -87,8 +87,17 @@ DATABASES = {
         'USER' : 'root',
         'PASSWORD':  'Devedra@1',
         'HOST': 'localhost',
-        'PORT':'8000'
+        'PORT':'8000',
     
+    },
+    'portal':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Portal',
+        'USER' : 'root',
+        'PASSWORD':  'Devedra@1',
+        'HOST': 'localhost',
+        'PORT':'8000',
+
     }
 }
 

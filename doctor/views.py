@@ -17,25 +17,30 @@ def logind(request):
         data_login_doc = json.loads(request.body)
         email = data_login_doc['email']
         password = data_login_doc['password']
-        if registrationd.objects.filter(status = "approved",email=email).exists() == True:
-            if registrationd.objects.filter(status = "approved",email=email,password=password).exists()==True:
-                data_list = list(registrationd.objects.filter(status = "approved",email=email,password=password)
-                .values("email","password"))
-                data = data_list[0]
-                passwd = data["password"]
-                print(passwd)
-                if password ==passwd :
-                    # print(data)  
-                    data_r=list(registrationd.objects.filter(email = email).values("first_name","last_name",
-                    "email","mobile_number","age","gender","previous_exp","qualification","department","id"))
-                    pending_appointment = appointment.objects.filter(status = "approve_by_manager").count()
-                    data_return={"data_r":data_r, "pending_appointment":pending_appointment}
-                    # return JsonResponse(data_return ,safe = False)
-                    # print(data_return)
+        if registrationd.objects.filter(email=email).exists() == True:
+            if registrationd.objects.filter(status = "approved",email=email).exists() == True:
+                if registrationd.objects.filter(status = "approved",email=email,password=password).exists()==True:
+                    data_list = list(registrationd.objects.filter(status = "approved",email=email,password=password)
+                    .values("password"))
+                    data = data_list[0]
+                    passwd = data["password"]
+                    print(passwd)
+                    if password ==passwd :
+                        # print(data)  
+                        data_r=list(registrationd.objects.filter(email = email).values("first_name","last_name",
+                        "email","mobile_number","age","gender","previous_exp","qualification","department","id"))
+                        pending_appointment = appointment.objects.filter(status = "approve_by_manager").count()
+                        data_return={"data_r":data_r, "pending_appointment":pending_appointment}
+                        # return JsonResponse(data_return ,safe = False)
+                        # print(data_return)
+                    else:
+                        data_return="wrong password"
                 else:
-                    data_return="wrong password"
+                    data_return = "wrong password"
             else:
-                data_return = "not registerd"
+                data_return="not approved by manager"
+        else:
+            data_return="not registered"
     return JsonResponse(data_return ,safe = False)
 
 #pending appointments
@@ -138,7 +143,10 @@ def patient_list(request):
         data = json.loads(request.body)
         doct_key_id=data['id']
         # list_data=list(appointment.objects.filter(doct_key_id=doct_key_id).values('id',))
-        count_of_app=list(appointment.objects.filter(doct_key_id=doct_key_id).values('patient_id__first_name','patient_id',
-        'patient_id__age','patient_id__mobile_number','patient_id__last_name').annotate(Count('id')))   
-    return JsonResponse(count_of_app,safe= False)   
+        if appointment.objects.filter(doct_key_id = doct_key_id,status = "approved_by_both"):
+            response=list(appointment.objects.filter(doct_key_id=doct_key_id).values('patient_id__first_name','patient_id',
+            'patient_id__age','patient_id__mobile_number','patient_id__last_name').annotate(Count('id'))) 
+        else:
+            sresponse ="no patient visited" 
+    return JsonResponse(response,safe= False)   
    
