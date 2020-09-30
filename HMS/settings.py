@@ -81,25 +81,27 @@ WSGI_APPLICATION = 'HMS.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'HMS',
-        'USER' : 'root',
-        'PASSWORD':  'Devedra@1',
-        'HOST': 'localhost',
-        'PORT':'8000',
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'HMS',
+#         'USER' : 'root',
+#         'PASSWORD':  'Devedra@1',
+#         'HOST': 'localhost',
+#         'PORT':'8000',
     
-    },
-    'portal':{
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Portal',
-        'USER' : 'root',
-        'PASSWORD':  'Devedra@1',
-        'HOST': 'localhost',
-        'PORT':'8000',
+#     },
+#     'portal':{
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Portal',
+#         'USER' : 'root',
+#         'PASSWORD':  'Devedra@1',
+#         'HOST': 'localhost',
+#         'PORT':'8000',
 
-    }
-}
+#     }
+# }
+    #Try not to disclose these database credentials here in GitHub !
+#Kaustubh
 
 
 # Password validation
